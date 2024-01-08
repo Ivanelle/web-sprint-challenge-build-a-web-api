@@ -26,27 +26,21 @@ router.get('/', async (req, res, next) => {
 
   
 })
-//come back to
+
 router.get('/:id', validProjectId, (req, res) => {
     res.status(200).json(req.project)
 })
 
-router.post('/', validateProject, async (req, res, next) => {
-
-    try {
-        const newProject = await Project.insert({ 
-            name: req.name,
-            description: req.description
-        })
-
+router.post('/', validateProject, (req, res, next) => {
+    Project.insert({ 
+        name: req.name,
+        description: req.description,
+        completed: true
+    })
+    .then(newProject => {
         res.status(201).json(newProject)
-
-    } catch(error) {
-        res.status(500).json({
-            message: error.message
-        })
-        next()
-    }
+    })
+    .catch (next)
 
 })
 

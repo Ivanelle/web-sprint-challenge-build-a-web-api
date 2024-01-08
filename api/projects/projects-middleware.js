@@ -30,9 +30,11 @@ function validateProject (req, res, next) {
             message: 'name and description are required'
         })
     } else {
+
         req.name = name.trim()
         req.description = description.trim()
-
+        
+    
         next()
     }
 }
