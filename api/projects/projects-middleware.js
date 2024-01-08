@@ -3,12 +3,12 @@ const Project = require('./projects-model');
 
 async function validProjectId (req, res, next) {
     try {
-        const project = await Project.getById(req.params.id)
-
+        const project = await Project.get(req.params.id);
+        
         if (!project) {
-            return res.status(404).json({
+            next(res.status(404).json({
                 message: 'no project found'
-            })
+            }))
         } else {
             req.project = project
             next()
@@ -16,7 +16,7 @@ async function validProjectId (req, res, next) {
 
     } catch (err) {
         res.status(500).json({
-            message: 'problem finding project'
+            message: err.message
         })
     }
 }

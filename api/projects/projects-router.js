@@ -32,7 +32,7 @@ router.get('/:id', validProjectId, (req, res) => {
 })
 
 router.post('/', validateProject, async (req, res, next) => {
-    const { name, description } = req.body
+
     try {
         const newProject = await Project.insert({ 
             name: req.name,
