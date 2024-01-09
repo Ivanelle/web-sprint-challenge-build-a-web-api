@@ -3,13 +3,16 @@ const Project = require('./projects-model');
 
 async function validProjectId (req, res, next) {
     try {
+        console.log('Inside validprojectID middleware')
         const project = await Project.get(req.params.id);
         
         if (!project) {
-            next(res.status(404).json({
+            console.log('No project found');
+           res.status(404).json({
                 message: 'no project found'
-            }))
+            })
         } else {
+            console.log('project found', project);
             req.project = project
             next()
         }
@@ -33,7 +36,6 @@ function validateProject (req, res, next) {
 
         req.name = name.trim()
         req.description = description.trim()
-
     
         next()
     }

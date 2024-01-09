@@ -35,7 +35,7 @@ router.post('/', validateProject, (req, res, next) => {
     Project.insert({ 
         name: req.name,
         description: req.description,
-        completed: true 
+        completed: true || false
     })
     .then(newProject => {
         res.status(201).json(newProject)
@@ -45,18 +45,18 @@ router.post('/', validateProject, (req, res, next) => {
 })
 
 router.put('/:id', validateProject, validProjectId, (req, res, next) => {
+    const { name, description, completed} = req.body
     Project.update(req.params.id, {
-        name: req.name,
-        description: req.description,
-        completed: true
+        name,
+        description,
+        completed: completed || false
     })
-    .then(() => {
-        Project.get(req.params.id)
+    .then(updatedProject => {
+        res.status(200).json(updatedProject)
     })
-    .then(project => {
-        res.json(...project)
+    .catch(error => {
+        next(error)
     })
-    .catch(next)
 })
 
 router.delete('/:id', validProjectId, (req, res, next) => {
