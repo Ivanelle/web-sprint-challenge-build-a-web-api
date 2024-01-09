@@ -70,7 +70,15 @@ router.delete('/:id', validProjectId, async (req, res, next) => {
 })
 
 router.get('/:id/actions', validProjectId, (req, res, next) => {
-
-})
+    Project.getProjectActions(req.params.id)
+        .then(actions => {
+            if (!actions) {
+                res.status(200).json([])
+            } else {
+                res.status(200).json(actions)
+            }
+        })
+        .catch(next)
+})  
 
  module.exports = router
