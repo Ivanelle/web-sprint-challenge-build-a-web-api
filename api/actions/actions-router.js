@@ -1,4 +1,8 @@
 const express = require('express')
+const {
+    validActionId,
+    validateAction
+} = require('./actions-middlware')
 
 const Action = require('./actions-model')
 
@@ -16,12 +20,21 @@ router.get('/', (req, res, next) => {
         .catch(next)
 })
 
-router.get('/:id', (req, res, next) => {
-    
+router.get('/:id', validActionId, (req, res, next) => {
+    res.status(200).json(req.action)
 })
 
-router.post('/', (req, res, next) => {
-    
+router.post('/', validateAction, (req, res, next) => {
+    const { project_id, description, notes} = req.body
+    Action.insert({
+        project_id,
+        description,
+        notes,
+    })
+    .then(newAction => {
+        res.status(201).json(newAction)
+    })
+    .catch(next)
 })
 
 router.put('/:id', (req, res, next) => {
