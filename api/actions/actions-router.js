@@ -7,7 +7,11 @@ const router = express.Router()
 router.get('/', (req, res, next) => {
     Action.get()
         .then(actions => {
-            console.log(actions)
+            if (!actions || actions.length === 0) {
+                res.status(200).json([])
+            } else {
+                res.status(200).json(actions)
+            }
         })
         .catch(next)
 })
