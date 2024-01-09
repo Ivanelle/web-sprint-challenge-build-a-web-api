@@ -35,7 +35,7 @@ router.post('/', validateProject, (req, res, next) => {
     Project.insert({ 
         name: req.name,
         description: req.description,
-        completed: true
+        completed: true 
     })
     .then(newProject => {
         res.status(201).json(newProject)
@@ -44,8 +44,19 @@ router.post('/', validateProject, (req, res, next) => {
 
 })
 
-router.put('/:id', validProjectId, (req, res, next) => {
-    
+router.put('/:id', validateProject, validProjectId, (req, res, next) => {
+    Project.update(req.params.id, {
+        name: req.name,
+        description: req.description,
+        completed: true
+    })
+    .then(() => {
+        Project.get(req.params.id)
+    })
+    .then(project => {
+        res.json(...project)
+    })
+    .catch(next)
 })
 
 router.delete('/:id', validProjectId, (req, res, next) => {

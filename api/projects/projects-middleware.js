@@ -22,18 +22,18 @@ async function validProjectId (req, res, next) {
 }
 
 function validateProject (req, res, next) {
-    const { name, description } = req.body
+    const { name, description, completed } = req.body
 
     if (!name || !name.trim() || 
-    !description || !description.trim()) {
+    !description || !description.trim() || completed === undefined ) {
         res.status(400).json({
-            message: 'name and description are required'
+            message: 'name, description, and completed are required'
         })
     } else {
 
         req.name = name.trim()
         req.description = description.trim()
-        
+
     
         next()
     }
