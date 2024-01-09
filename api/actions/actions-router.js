@@ -37,16 +37,31 @@ router.post('/', validateAction, (req, res, next) => {
     .catch(next)
 })
 
-router.put('/:id', (req, res, next) => {
-    
+router.put('/:id', validActionId, validateAction, (req, res, next) => {
+    const { project_id, description, notes, completed} = req.body
+    Action.update(req.params.id, {
+        project_id,
+        description,
+        notes,
+        completed: completed || false
+    })
+    .then(updatedAction => {
+        res.status(200).json(updatedAction)
+    })
+    .catch(error => {
+        next(error)
+    })
 })
 
-router.delete('/:id', (req, res, next) => {
-
+router.delete('/:id', validActionId, async (req, res, next) => {
+    try {
+        await Action.remove(req.params.id)
+        res.json(req.action)
+    }
+    catch (error) {
+        next(error)
+    }
 })
 
-router.get('/:id/actions', (req, res, next) => {
-
-})
 
  module.exports = router
